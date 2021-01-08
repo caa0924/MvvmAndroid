@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="navicontentBean"
+            type="fule.com.playandroidkotlin.ui.model.NavigationModel.DataBean" />
+
+        <import type="java.util.List" />
+
+        <variable
+            name="articlesBean"
+            type="List&lt;fule.com.playandroidkotlin.ui.model.ArticlesModel>" />
+
+        <variable
+            name="index"
+            type="int" />
+    </data>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{navicontentBean.name}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+
+        <com.zhy.view.flowlayout.TagFlowLayout
+            android:id="@+id/flow_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:max_select="0" />
+
+    </LinearLayout>
+</layout>

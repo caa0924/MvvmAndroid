@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">MvvmPlayAndroid</string>
+
+    <string-array name="tabs">
+        <item>首页</item>
+        <item>知识</item>
+        <item>导航</item>
+        <item>项目</item>
+
+    </string-array>
+    <string name="home">首页</string>
+    <string name="project">项目</string>
+    <string name="navigation">导航</string>
+    <string name="knowledge_tree">知识体系</string>
+    <string name="loading">加载中...</string>
+    <string name="exit_hint">再按一次退出</string>
+    <string name="user_name">用户名</string>
+
+    <string name="favorites">收藏</string>
+    <string name="todo">待办清单</string>
+    <string name="night_mode">夜间模式</string>
+    <string name="setting">设置</string>
+    <string name="logout">退出登录</string>
+    <string name="about">关于</string>
+</resources>

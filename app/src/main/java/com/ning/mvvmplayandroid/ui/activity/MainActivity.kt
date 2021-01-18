@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -32,8 +34,14 @@ import java.util.*
 open class MainActivity : BaseActivity() {
     private var lastExitTime: Long = 0
     private var index = 0
+    private var fragmentTag: String? = null
+    private var mCurrentFragment: Fragment? = null
     private val fragmentList: MutableList<Fragment> =
         ArrayList()
+    private val fragmentNames = arrayOf(
+        HomeFragment::class.java.name, ProjectFragment::class.java.name,
+        NavigationFragment::class.java.name, KnowledgeFragment::class.java.name
+    )
     private val strings =
         arrayOf( R.string.home,  R.string.project, R.string.navigation, R.string.knowledge_tree)
 
@@ -54,8 +62,71 @@ open class MainActivity : BaseActivity() {
             drawerLayout.closeDrawers()
             true
         }
+        initNavBottom()
+        bottomNav()
+    }
+    private fun initNavBottom() {
+        val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> index = 0
+
+                R.id.project -> index = 1
+                R.id.navigation -> index = 2
+                R.id.knowledge_tree -> index = 3
+
+            }
+            bottomNav()
+            true
+        }
+        navigation_bottom.run {
+            labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_AUTO
+            setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        }
+    }
+    private fun bottomNav() {
+        toolbar.title = getString(
+            if (index == 0) {
+                R.string.app_name
+            } else {
+                strings[index]
+            }
+        )
+        fragmentTag = fragmentNames[index]
+        val fragment = getFragmentByTag(fragmentTag!!)
+        showFragment(mCurrentFragment, fragment, fragmentTag!!)
+    }
+    private fun getFragmentByTag(name: String): Fragment {
+        var fragment = supportFragmentManager.findFragmentByTag(name)
+        if (fragment != null) {
+            return fragment
+        } else {
+            try {
+                fragment = Class.forName(name).newInstance() as Fragment
+            } catch (e: Exception) {
+                fragment = HomeFragment()
+            }
+        }
+        return fragment!!
     }
 
+    private fun showFragment(from: Fragment?, to: Fragment, tag: String) {
+        val transaction = supportFragmentManager.beginTransaction()
+        if (from == null) {
+            if (to.isAdded) {
+                transaction.show(to)
+            } else {
+                transaction.add(R.id.container, to, tag)
+            }
+        } else {
+            if (to.isAdded) {
+                transaction.hide(from).show(to)
+            } else {
+                transaction.hide(from).add(R.id.container, to, tag)
+            }
+        }
+        transaction.commit()
+        mCurrentFragment = to
+    }
     private fun initNav() {
 
         val navListener = NavigationView.OnNavigationItemSelectedListener {
